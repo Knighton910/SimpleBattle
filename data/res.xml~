@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<resources>
+  <set path = "fonts" />
+  <font file="main.fnt" />
+
+  <set path="images/Land"/>
+  <atlas>
+    <image file="Box.png"/> 
+    <image file="Floor.png"/>
+    <image file="FloorF.png"/>  
+    <image file="Wall.png"/> 
+    <image file="Luke.png"/> 
+    <image file="Lava.png"/> 
+    <image file="Door.png" cols="12"/> 
+
+  <set path="images/Units"/>
+    <image file="Human.png"/> 
+    <image file="Ship.png"/>
+  </atlas>
+</resources>
+
