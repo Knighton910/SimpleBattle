@@ -7,7 +7,6 @@ PlotBet::PlotBet(double _value, Vector2 start, Vector2 finish, double _win, Colo
     betSprite->setSize(1.0, _height);
     betSprite->setPosition(start);
     betSprite->setAnchor(0.0, 0.5);
-    betSprite->setAlpha(75);
     if (_win > 0)
     {
         double angle = atan2( finish.y - start.y,  finish.x - start.x) ;

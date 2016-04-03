@@ -2,7 +2,14 @@
 
 Menu::Menu()
 {
-    plot = new Plot(600,400);
+    TextStyle ts;
+
+    ts.color = Color::Blue;
+    ts.hAlign = TextStyle::HALIGN_CENTER;
+    ts.vAlign = TextStyle::VALIGN_MIDDLE;
+    ts.font = config::resources.getResFont("main")->getFont();
+
+    plot = new Plot(600,400, ts);
     plot->setPosition(150,100);
     addChild(plot);
     s = new Ship(bullets,  0, 200,200);
@@ -13,7 +20,7 @@ Menu::Menu()
 
     for (int i = 0; i < 3; i ++)
     {
-        for (int j = 0; j < 2; j ++)
+        for (int j = 0; j < 0; j ++)
         {
             spShip evil =  new Ship(bullets,  100 , 500 + j*100,200 * i);
             addChild(evil);
@@ -22,12 +29,12 @@ Menu::Menu()
         }
     }
 
-    for (int i = 0; i < 25; i++)
+    for (int i = 0; i < 30; i++)
     {
-        speed.push_back(new PlotPoint(0.0, 0.0f));
+        speed.push_back(new PlotPoint(1.0, 0.0f));
     }
     s->ciber();
-    spTween tween = this->addTween(TweenDummy(), 2500);
+    spTween tween = this->addTween(TweenDummy(), 16);
     tween->addEventListener(TweenEvent::DONE, [this](Event* e)
     {
         update();
@@ -42,12 +49,12 @@ void Menu::update()
 
 
     speed.erase(speed.begin());
-    if (temp % 15 == 10)
+    if (temp % 50 == 45)
         speed.push_back(new PlotPoint(s->getVector(), s->getVector()*0.05));
     else
         speed.push_back(new PlotPoint(s->getVector(), 0.0f));
     plot->update(speed);
-    spTween tween = this->addTween(TweenDummy(), 16);
+    spTween tween = this->addTween(TweenDummy(), 200);
     for (int i = 0; i < bullets.size(); i++)
     {
         bullets[i]->move();
