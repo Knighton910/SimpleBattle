@@ -64,6 +64,12 @@ void Plot::update(IterT begin, IterT end, int _rows_count)
     rows_count = _rows_count;
     plotActor->detach();
     plotActor = new Actor();
+    plotActor->setSize(getSize());
+
+    spClipRectActor plotClipActor = new ClipRectActor();
+    plotClipActor->setSize(getSize());
+
+
     addChild(plotActor);
     points.clear();
     Bpoints.clear();
@@ -93,7 +99,7 @@ void Plot::update(IterT begin, IterT end, int _rows_count)
     for (size_t i = 0; i < points.size() - 1;  i++)
     {
         spPlotLine pl = new PlotLine(points[i]->position, points[i+1]->position, Color::Yellow, height + 2);
-        plotActor->addChild(pl);
+        plotClipActor->addChild(pl);
     }
     for (size_t i = 0; i < Bpoints.size() - 1; ++it, i++)
     {
@@ -115,8 +121,9 @@ void Plot::update(IterT begin, IterT end, int _rows_count)
         ymin = getHeight() - ymin;
 
         spPlotBet pb = new PlotBet((*it)->value +  (*it)->win  ,Vector2(stepX*i, ymin), Vector2(stepX*i, ymax),(*it)->win, betStyle,Color::Red, 5*stepX);
-        plotActor->addChild(pb);
+        plotClipActor->addChild(pb);
     }
+    plotActor->addChild(plotClipActor);
 }
 
 template <class IterT>

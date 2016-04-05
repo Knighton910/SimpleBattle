@@ -16,10 +16,12 @@ using namespace std;
 class PlotBet: public Actor
 {
 public:
-    PlotBet(double _value, Vector2 start, Vector2 finish, double _win, TextStyle style ,Color color = Color::Yellow, double height = 5.0);
+    PlotBet(double _value, Vector2 start, Vector2 finish, double _win, TextStyle style ,Color color = Color::Yellow, double heightLine = 5.0, double HeightBackground = 20.0);
 private:
     spColorRectSprite betSprite;
+    spColorRectSprite backgroundBetSprite;
     spColorRectSprite background;
+    spColorRectSprite littleLine;
     spTextField value;
 
 
