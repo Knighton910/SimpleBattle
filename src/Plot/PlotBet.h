@@ -16,10 +16,12 @@ using namespace std;
 class PlotBet: public Actor
 {
 public:
-    PlotBet(double _value, Vector2 start, Vector2 finish, double _win,Color color = Color::Yellow, double height = 5.0);
+    PlotBet(double _value, Vector2 start, Vector2 finish, double _win, TextStyle style ,Color color = Color::Yellow, double height = 5.0);
 private:
     spColorRectSprite betSprite;
+    spColorRectSprite background;
     spTextField value;
+
 
 };
 typedef oxygine::intrusive_ptr<PlotBet> spPlotBet;

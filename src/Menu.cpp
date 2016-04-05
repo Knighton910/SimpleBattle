@@ -4,9 +4,9 @@ Menu::Menu()
 {
     TextStyle ts;
 
-    ts.color = Color::Blue;
+    ts.color = Color::Black;
     ts.hAlign = TextStyle::HALIGN_CENTER;
-    ts.vAlign = TextStyle::VALIGN_MIDDLE;
+    ts.vAlign = TextStyle::VALIGN_BASELINE;
     ts.font = config::resources.getResFont("main")->getFont();
 
     plot = new Plot(600,400, ts);
@@ -49,10 +49,10 @@ void Menu::update()
 
 
     speed.erase(speed.begin());
-    if (temp % 50 == 45)
-        speed.push_back(new PlotPoint(s->getVector(), s->getVector()*0.05));
+    if (temp % 17 == 15)
+        speed.push_back(new PlotPoint(1.0 + (s->getVector()*0.001), (rand()%200)/100 + (s->getVector()*0.001)));
     else
-        speed.push_back(new PlotPoint(s->getVector(), 0.0f));
+        speed.push_back(new PlotPoint(1.0 + (s->getVector()*0.001), 0.0f));
     plot->update(speed);
     spTween tween = this->addTween(TweenDummy(), 200);
     for (int i = 0; i < bullets.size(); i++)

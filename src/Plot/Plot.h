@@ -22,7 +22,7 @@ class Plot: public Actor
 {
 public:
     //Конструктор  принимает 2 параметра ширину и длину Актера на котором отображается график
-    Plot(int width, int height, TextStyle textStyle, double lineHeight = 5.0);
+    Plot(int width, int height, TextStyle textStyle, double lineHeight = 3.0);
 
     // Метод принимает выборку точек типа PlotPoint, и количество строк (единиц) на графике
     void update(vector<spPlotPoint> _sample, int _rows_count = 10);
@@ -32,6 +32,10 @@ public:
 
 private:
     TextStyle textStyle;
+
+    TextStyle rowRStyle;
+    TextStyle rowLStyle;
+
     double height;
     spActor plotActor;
     vector<spPlotPoint> points;
@@ -68,25 +72,37 @@ void Plot::update(IterT begin, IterT end, int _rows_count)
     for (int i = 0; i < rows_count + 1; i++)
     {
         double value = max_open - i*(max_open - min_open)/rows_count;
+        TextStyle rowRStyle;
+        rowRStyle = textStyle;
+        rowRStyle.hAlign = TextStyle::HALIGN_LEFT;
 
-        spRow row = new Row(value, Vector2(0, i*getHeight()/rows_count), Vector2(getWidth(), i*getHeight()/rows_count), textStyle, Color::Gray, height);
+        spRow row = new Row(value, Vector2(0, i*getHeight()/rows_count), Vector2(getWidth(), i*getHeight()/rows_count), rowRStyle, Color::Gray, height);
         plotActor->addChild(row);
+
+        TextStyle rowLStyle;
+        rowLStyle = textStyle;
+        rowLStyle.hAlign = TextStyle::HALIGN_RIGHT;
 
         value = max_close - i*(max_close - min_close)/rows_count;
 
-        row = new Row(value , Vector2(getWidth(), i*getHeight()/rows_count), Vector2(0, i*getHeight()/rows_count), textStyle, Color::Gray, height);
+        row = new Row(value , Vector2(getWidth(), i*getHeight()/rows_count), Vector2(0, i*getHeight()/rows_count), rowLStyle, Color::Gray, height);
         plotActor->addChild(row);
     }
 
     IterT it = begin;
-    for (size_t i = 0; i < points.size() - 1; ++it, i++)
+    for (size_t i = 0; i < points.size() - 1;  i++)
     {
         spPlotLine pl = new PlotLine(points[i]->position, points[i+1]->position, Color::Yellow, height + 2);
         plotActor->addChild(pl);
-        spPlotLine pl2 = new PlotLine(Bpoints[i]->position, Bpoints[i+1]->position, Color::Red, height);
-        //plotActor->addChild(pl2);
+    }
+    for (size_t i = 0; i < Bpoints.size() - 1; ++it, i++)
+    {
 
-
+        TextStyle betStyle;
+        betStyle.color = Color::Black;
+        betStyle.hAlign = TextStyle::HALIGN_CENTER;
+        betStyle.vAlign = TextStyle::VALIGN_MIDDLE;
+        betStyle.font = textStyle.font;
 
         double ymax = ((*it)->value + (*it)->win - min_close);
         ymax = ymax/(max_close - min_close);
@@ -98,11 +114,8 @@ void Plot::update(IterT begin, IterT end, int _rows_count)
         ymin *= getHeight();
         ymin = getHeight() - ymin;
 
-        spPlotBet pb = new PlotBet((*it)->value +  (*it)->win  ,Vector2(stepX*i, ymin), Vector2(stepX*i, ymax),(*it)->win ,Color::Red, stepX);
+        spPlotBet pb = new PlotBet((*it)->value +  (*it)->win  ,Vector2(stepX*i, ymin), Vector2(stepX*i, ymax),(*it)->win, betStyle,Color::Red, 5*stepX);
         plotActor->addChild(pb);
-
-
-
     }
 }
 
@@ -129,14 +142,19 @@ void Plot::takeMinMax(IterT begin, IterT end)
         }
 
         min_open -= (max_open - min_open)*0.01;
-        min_open *= 0.95;
+        min_open *= 0.999;
         max_open += (max_open - min_open)*0.01;
-        max_open *= 1.05;
+        max_open *= 1.001;
 
         min_close -= (max_close - min_close)*0.01;
-        min_close *= 0.95;
+        min_close *= 0.999;
         max_close += (max_close - min_close)*0.01;
-        max_close *= 1.05;
+        max_close *= 1.001;
+
+        if (max_close > max_open)
+        {
+            max_close *= 1.1;
+        }
         stepX = getWidth()/((end - begin) -1);
     }
 }

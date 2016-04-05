@@ -4,10 +4,6 @@ Plot::Plot(int width, int height, TextStyle textStyle, double lineHeight) :
     textStyle(textStyle),
     height(lineHeight)
 {
-    spColorRectSprite background = new ColorRectSprite();
-    background->setColor(Color::Black);
-    background->setSize(width, height);
-    addChild(background);
     setSize(width, height);
     plotActor = new Actor();
     addChild(plotActor);

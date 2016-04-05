@@ -21,4 +21,6 @@ private:
     spTextField value;
 
 };
+
+string cutDouble(double a);
 typedef oxygine::intrusive_ptr<Row> spRow;
